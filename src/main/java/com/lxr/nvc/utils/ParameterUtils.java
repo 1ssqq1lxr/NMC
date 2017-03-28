@@ -3,6 +3,8 @@ package com.lxr.nvc.utils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.lxr.nvc.annotation.Param;
 import com.lxr.nvc.model.Model;
 
 public class ParameterUtils {
@@ -34,27 +37,27 @@ public class ParameterUtils {
 					else if(type.equals(Model.class)){
 						objs[i]=requestUtil.getModel();
 					}
-					else if(type.isPrimitive() || type.equals(String.class)){
-						System.out.println(	parameter.isNamePresent());
-						System.out.println(parameter.getName());
-						objs[i]=(T)requestUtil.getRequest().getParameter(parameter.getName());
+					else if(type.isPrimitive() ){
+						Param annotation = parameter.getAnnotation(Param.class);
+						
+						if(type.equals(int.class) || type.equals(Integer.class)){
+							objs[i]=Integer.parseInt(requestUtil.getRequest().getParameter(annotation.value()));
+						}
+						else if(type.equals(Double.class) || type.equals(double.class)){
+							objs[i]=Double.parseDouble(requestUtil.getRequest().getParameter(annotation.value()));
+						}
+						else if(type.equals(Date.class) ){
+							objs[i]=new SimpleDateFormat("yyyyMMddHHmmss").parse(requestUtil.getRequest().getParameter(annotation.value()));
+						}
+						
 					}
-					else if(type.isAssignableFrom(String.class)){
-						System.out.println(parameter.getName());
-						System.out.println(parameter);
-						objs[i]=requestUtil.getRequest().getParameter(parameter.getName());
+					else if(type.equals(String.class)){
+						Param annotation = parameter.getAnnotation(Param.class);
+						objs[i]=requestUtil.getRequest().getParameter(annotation.value());
 					}
 					else { //对象的处理
 						T t=BeanUtils.getBean(type, requestUtil);
 						objs[i]=t;
-//						Method[] methods =classt.getDeclaredMethods();
-//						if(methods.length>0){
-//							for(Method method:methods){
-//								
-//							}
-//						}
-
-						
 					}
 				}
 				
