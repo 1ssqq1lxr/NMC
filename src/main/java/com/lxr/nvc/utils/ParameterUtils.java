@@ -34,14 +34,16 @@ public class ParameterUtils {
 					else if(type.equals(Model.class)){
 						objs[i]=requestUtil.getModel();
 					}
-					else if(type.isPrimitive()){
+					else if(type.isPrimitive() || type.equals(String.class)){
+						System.out.println(	parameter.isNamePresent());
+						System.out.println(parameter.getName());
 						objs[i]=(T)requestUtil.getRequest().getParameter(parameter.getName());
 					}
-//					else if(type.isAssignableFrom(String.class)){
-//						System.out.println(parameter.getName());
-//						System.out.println(parameter);
-//						objs[i]=requestUtil.getRequest().getParameter(parameter.getName());
-//					}
+					else if(type.isAssignableFrom(String.class)){
+						System.out.println(parameter.getName());
+						System.out.println(parameter);
+						objs[i]=requestUtil.getRequest().getParameter(parameter.getName());
+					}
 					else { //对象的处理
 						T t=BeanUtils.getBean(type, requestUtil);
 						objs[i]=t;

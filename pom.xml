@@ -7,6 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Nvc Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -23,5 +24,19 @@
 	</dependencies>
 	<build>
 		<finalName>Nvc</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<compilerArgument>-parameters</compilerArgument>
+					<encoding>UTF-8</encoding>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
+
 </project>

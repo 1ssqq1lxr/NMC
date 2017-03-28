@@ -10,6 +10,6 @@
 <body>
 		<% String name=(String)request.getAttribute("lxr"); %>
 		<%= name %>
-		<td>${lxr }</td>
+		<td>${requestScope.lxr }</td>
 </body>
 </html>
