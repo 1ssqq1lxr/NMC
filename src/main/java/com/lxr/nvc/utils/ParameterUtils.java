@@ -40,20 +40,40 @@ public class ParameterUtils {
 					else if(type.isPrimitive() ){
 						Param annotation = parameter.getAnnotation(Param.class);
 						
-						if(type.equals(int.class) || type.equals(Integer.class)){
+						if(type.equals(int.class)){
 							objs[i]=Integer.parseInt(requestUtil.getRequest().getParameter(annotation.value()));
 						}
-						else if(type.equals(Double.class) || type.equals(double.class)){
+						else if( type.equals(double.class)){
 							objs[i]=Double.parseDouble(requestUtil.getRequest().getParameter(annotation.value()));
 						}
 						else if(type.equals(Date.class) ){
 							objs[i]=new SimpleDateFormat("yyyyMMddHHmmss").parse(requestUtil.getRequest().getParameter(annotation.value()));
 						}
+						else if(type.equals(boolean.class)){
+							objs[i]=Boolean.parseBoolean(requestUtil.getRequest().getParameter(annotation.value()));
+						}
 						
 					}
+					
 					else if(type.equals(String.class)){
 						Param annotation = parameter.getAnnotation(Param.class);
 						objs[i]=requestUtil.getRequest().getParameter(annotation.value());
+					}
+					else if(type.equals(Double.class)){
+						Param annotation = parameter.getAnnotation(Param.class);
+						objs[i]=Double.parseDouble(requestUtil.getRequest().getParameter(annotation.value()));
+					}
+					else if(type.equals(Date.class)){
+						Param annotation = parameter.getAnnotation(Param.class);
+						objs[i]=new SimpleDateFormat("yyyyMMddHHmmss").parse(requestUtil.getRequest().getParameter(annotation.value()));
+					}
+					else if(type.equals(Boolean.class)){
+						Param annotation = parameter.getAnnotation(Param.class);
+						objs[i]=Boolean.parseBoolean(requestUtil.getRequest().getParameter(annotation.value()));
+					}
+					else if(type.equals(Integer.class)){
+						Param annotation = parameter.getAnnotation(Param.class);
+						objs[i]=Integer.parseInt(requestUtil.getRequest().getParameter(annotation.value()));
 					}
 					else { //对象的处理
 						T t=BeanUtils.getBean(type, requestUtil);
