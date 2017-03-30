@@ -5,4 +5,6 @@ import java.util.Map;
 public interface Model {
 		public void addAttribute(String key,Object value);
 		public void addAttributeMap(Map<?,?> map);
+		public void setJson(Object obj);
+		public Object getJson();
 }

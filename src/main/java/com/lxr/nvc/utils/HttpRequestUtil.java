@@ -10,6 +10,7 @@ import com.lxr.nvc.model.HttpModel;
 import com.lxr.nvc.model.Model;
 
 public class HttpRequestUtil {
+	ThreadLocal<Model> local = new ThreadLocal<Model>();
 	private HttpServletRequest request;
 	
 	private HttpServletResponse response;
@@ -48,7 +49,12 @@ public class HttpRequestUtil {
 	}
 
 	public Model getModel() {
-		return new HttpModel(this.request);
+		Model model =local.get();
+		if(model==null){
+			model=new HttpModel(this.request);
+			local.set(model);
+		}
+		return model;
 	}
 
 	

@@ -13,12 +13,18 @@ import com.alibaba.fastjson.JSON;
 import com.lxr.nvc.annotation.Controller;
 import com.lxr.nvc.annotation.RequestUrl;
 import com.lxr.nvc.annotation.ResponseBody;
+import com.lxr.nvc.model.Model;
 /**
  * lxr
  * @author Administrator
  *  
  */
 public class UrlFilter {
+	/**
+	 * @param requestUtil
+	 * @param pack
+	 * @param url
+	 */
 	public static void filter(HttpRequestUtil requestUtil,String pack,String url){
 		Set<Class<?>> classes = PackageUtil.getClasses(pack);
 		if(!classes.isEmpty()&&classes.size()>0){
@@ -44,14 +50,14 @@ public class UrlFilter {
 							if(requestUrl.method() ==null || requestUrl.method().equalsIgnoreCase(request_method)){
 								if(requestUrl!=null ){
 									String method_url=requestUrl.value();
-									if(method_url.equals(url)){
+ 									if(method_url.equals(url)){
 										System.out.println(method.getName());
 
 										try {
 											Object newInstance = classt.newInstance();
 											Parameter[] parameters = method.getParameters();
 											Object[] buildParams = ParameterUtils.buildParams(requestUtil, parameters);
-											String invoke = (String) method.invoke(newInstance,buildParams);
+											String  invoke = (String) method.invoke(newInstance,buildParams);
 											if(invoke!=null&&!invoke.equals("")){
 												if(invoke.startsWith("redirect:")){//重定向
 													requestUtil.getResponse().sendRedirect(invoke.replace("redirect:", ""));
@@ -63,7 +69,7 @@ public class UrlFilter {
 											else if(responseBody!=null && invoke==null ){
 												requestUtil.getResponse().setCharacterEncoding("UTF-8");  
 												requestUtil.getResponse().setContentType("application/json; charset=utf-8"); 
-												String jsonString = JSON.toJSONString(invoke);
+												String jsonString = JSON.toJSONString( requestUtil.getModel().getJson());
 												PrintWriter outputStream = requestUtil.getResponse().getWriter();
 												outputStream.write(jsonString);
 												outputStream.close();
