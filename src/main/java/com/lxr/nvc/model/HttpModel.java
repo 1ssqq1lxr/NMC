@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 public class HttpModel implements Model{
-	ThreadLocal<Object> threadLocal = new ThreadLocal<Object>();
 	HttpServletRequest request ;
 	
 	Object json;
@@ -28,23 +27,14 @@ public class HttpModel implements Model{
 		}
 	}
 
-	@Override
-	public void setJson(Object obj) {
-		// TODO Auto-generated method stub	
-			threadLocal.set(obj);
-		
+	public Object getJson() {
+		return json;
 	}
 
-	public Object getJson() {
-		// TODO Auto-generated method stub
-		Object object = threadLocal.get();
-		if(object==null){
-			throw new RuntimeException("未存放json数据");
-		}
-		else{
-			return object;
-		}
-		
+	public void setJson(Object json) {
+		this.json = json;
 	}
+
+	
 
 }
