@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.lxr.nvc.annotation.Controller;
+import com.lxr.nvc.annotation.Interceptor;
 import com.lxr.nvc.annotation.Param;
 import com.lxr.nvc.annotation.RequestUrl;
 import com.lxr.nvc.annotation.ResponseBody;
 import com.lxr.nvc.model.Model;
 
 @Controller(url="")
+@Interceptor({TestController.class})
 public class TestController {
 		@ResponseBody
 		@RequestUrl(value="/haha.do", method = "get")

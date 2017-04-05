@@ -1,6 +1,7 @@
 package com.lxr.nvc.utils;
 
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Set;
@@ -11,6 +12,7 @@ import org.eclipse.jdt.internal.compiler.ast.ThrowStatement;
 
 import com.alibaba.fastjson.JSON;
 import com.lxr.nvc.annotation.Controller;
+import com.lxr.nvc.annotation.Interceptor;
 import com.lxr.nvc.annotation.RequestUrl;
 import com.lxr.nvc.annotation.ResponseBody;
 import com.lxr.nvc.model.Model;
@@ -30,6 +32,7 @@ public class UrlFilter {
 		if(!classes.isEmpty()&&classes.size()>0){
 			for(Class classt:classes){
 				Controller annotation = (Controller) classt.getAnnotation(Controller.class);
+				Interceptor action_Interceptor = (Interceptor) classt.getAnnotation(Interceptor.class);
 				if(annotation!=null){
 
 					Method[] declaredMethods = classt.getDeclaredMethods();
@@ -46,13 +49,12 @@ public class UrlFilter {
 						for(Method method:declaredMethods){
 							RequestUrl requestUrl = method.getAnnotation(RequestUrl.class);
 							ResponseBody responseBody = method.getAnnotation(ResponseBody.class);
+							Interceptor method_Interceptor = method.getAnnotation(Interceptor.class);
 							String request_method = requestUtil.getRequest().getMethod();
 							if(requestUrl.method() ==null || requestUrl.method().equalsIgnoreCase(request_method)){
 								if(requestUrl!=null ){
 									String method_url=requestUrl.value();
  									if(method_url.equals(url)){
-										System.out.println(method.getName());
-
 										try {
 											Object newInstance = classt.newInstance();
 											Parameter[] parameters = method.getParameters();
