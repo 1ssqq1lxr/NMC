@@ -66,6 +66,8 @@ public class TestServlet extends HttpServlet{
 					}
 					finally{
 						asyncContext.complete();
+						//当自己维护线程池的时候需要使用这个方法通知servlet容器子线程已经完成任务   
+//						当使用asyncContext.start()方法 实在当前web容器中开启一个线程  不推荐此  因为关闭了主线程又开启了一个新的线程 意义不大
 					}
 				}
 			});
